@@ -1,0 +1,44 @@
+{
+  "name": "gnd-dropdown",
+  "version": "0.0.1",
+  "description": "A Gnd dropdown component",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/OptimalBits/gnd-dropdown.git"
+  },
+  "keywords": [
+    "gnd",
+    "typescript",
+    "dropdown"
+  ],
+  "author": "Manuel Astudillo",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "gitHead": "bc19511d93cbd196157362cb8c45bf97c4370847",
+  "bugs": {
+    "url": "https://github.com/OptimalBits/gnd-dropdown/issues"
+  },
+  "tscDependencies": [
+    "gnd"
+  ],
+  "dependencies": {
+    "gnd": "~0.3.3"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "time-grunt": "~0.1.1",
+    "grunt-typescript": "~0.2.2",
+    "grunt-contrib-compress": "~0.5.2",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-yuidoc": "~0.4.0",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-copy": "~0.4.1"
+  }
+}
