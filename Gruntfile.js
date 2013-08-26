@@ -1,45 +1,36 @@
 module.exports = function(grunt) {
   require('time-grunt')(grunt);
   
+  var Gnd = require('gnd');
+  
   var pkg = grunt.file.readJSON('package.json');
 
   var typescriptDependencies = [];
   if(pkg.tscDependencies){
     typescriptDependencies = pkg.tscDependencies.map(function(dep){
-      return 'node_modules/'+dep+'/dist/*.d.ts';
+      return 'node_modules/'+dep+'/build/*.d.ts';
     });
   }
-  
+    
   // Project configuration.
   grunt.initConfig({
     pkg: pkg,
     typescript: {
       client: {
         src: ['src/dropdown.ts'].concat(typescriptDependencies),
-        dest: './build/',
+        dest: './build/dropdown.js',
         options: {
-          module: 'amd', //or commonjs
+          //module: 'amd', //or commonjs
           target: 'es3', //or es5
           sourcemap: true,
-          fullSourceMapPath: true,
+          //fullSourceMapPath: true,
           declaration: true,
         }
       },
-      /*
-      server: {
-        src: ['gnd-server.ts'],
-        dest: 'dist/gnd-server.js',
-        options: {
-          module: 'amd', //or commonjs
-          target: 'es3', //or es5
-          //base_path: 'path/to/typescript/files',
-          sourcemap: true,
-          fullSourceMapPath: true,
-          declaration: true,
-        }
-      }*/
     },
+
     copy: {
+      /*
       main: {
         cwd: 'build/src/',
         expand: true,
@@ -47,12 +38,41 @@ module.exports = function(grunt) {
         dest: 'build/',
         flatten: true,
         filter: 'isFile',
+      },
+      */
+      tmpl:{
+        cwd: 'src/',
+        src: '*.tmpl',
+        dest: 'build/tmpl/',
+        expand: true,
+        flatten: true,
+        filter: 'isFile',
       }
     },
-    clean: ['build/src'],
+    clean: ['build/tmpl'],
+    requirejs: {
+      app: {
+        options: {
+          baseUrl: "build",
+          
+          name: "dropdown",
+          include: ['text!tmpl/dropdown.html.tmpl'],
+          exclude: ['gnd'],
+          
+          useStrict: true,
+          out: "build/dropdown.js",
+          
+          paths: {
+            "gnd": Gnd.amd
+          },
+
+          optimize: "none"
+        }
+      },
+    },
     uglify: {
       client: {
-        files: {'build/dropdown.min.js': 'build/*.js'},
+        files: {'build/dropdown.min.js': 'build/dropdown.js'},
         options: {
           banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
           compress: {
@@ -101,6 +121,7 @@ module.exports = function(grunt) {
 
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-typescript');
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
@@ -108,5 +129,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
 
   // Default task(s).
-  grunt.registerTask('default', ['typescript', 'copy', 'uglify', 'compress', 'yuidoc', 'clean']);
+  grunt.registerTask('default', ['typescript', 'copy', 'requirejs', 'uglify', 'compress', 'yuidoc', 'clean']);
 };
