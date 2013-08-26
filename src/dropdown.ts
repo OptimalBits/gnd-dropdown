@@ -9,7 +9,7 @@ class SelectOption extends Gnd.Model
 // SelectOption.schema()
 // SelectOption.decorate('selectOptions', schema)
 
-export class DropDown extends Gnd.View {
+class DropDown extends Gnd.View {
   private selectingId: string;
   private selectedId: string;
   private selectedItem: Gnd.Model;
@@ -20,7 +20,7 @@ export class DropDown extends Gnd.View {
   constructor(collection: Gnd.Collection, opts)
   {
     super({
-      templateUrl: 'dropdown.html.tmpl',
+      templateUrl: 'tmpl/dropdown.html.tmpl',
       templateEngine: _.template
     });
       
@@ -147,7 +147,7 @@ export class DropDown extends Gnd.View {
         
       this.set('selectedId', item.get('itemId'));
         
-      this.emit('selected:', item.get('itemId'));
+      this.emit('selected:', item.get('item'));
     } else {
       this.set('selectedItem.name','');
     }
