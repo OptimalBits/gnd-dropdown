@@ -175,3 +175,22 @@ export class DropDown extends Gnd.View {
     }
   }
 }
+
+//
+// Boiler plate needed to TypeScript deficient module support.
+//
+declare var define;
+declare var exports;
+(function (root, factory) {
+  if (typeof exports === 'object') {
+    root['module'].exports = factory();
+  } else if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define(['gnd'], factory);
+  } else {
+    // Browser globals (root is window)
+    root.returnExports = factory();
+  }
+}(this, function () {
+    return DropDown;
+}));
