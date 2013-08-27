@@ -57,7 +57,7 @@ module.exports = function(grunt) {
           
           name: "dropdown",
           include: ['text!tmpl/dropdown.html.tmpl'],
-          exclude: ['gnd'],
+          exclude: ['gnd', 'text'],
           
           useStrict: true,
           out: "build/dropdown.js",
