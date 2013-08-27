@@ -29,7 +29,7 @@ class DropDown extends Gnd.View {
     });
       
     if(opts.selection){
-      opts.selection.model.on(opts.selection.key, function(id){
+      opts.selection.model.on(opts.selection.key, (id) => {
         this.selectById(id);
       });
       this.on('selectedId', function(id){
