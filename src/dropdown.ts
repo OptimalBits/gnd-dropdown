@@ -186,7 +186,7 @@ declare var exports;
     root['module'].exports = factory();
   } else if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
-    define(['gnd'], factory);
+    define('gnd/dropdown', ['gnd'], factory);
   } else {
     // Browser globals (root is window)
     root.returnExports = factory();
