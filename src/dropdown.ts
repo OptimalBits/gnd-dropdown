@@ -49,7 +49,8 @@ class DropDown extends Gnd.View {
              itemId: item.id()}));
           break;
         case 'removed:':
-          selectOptions.remove(item.id());
+          var opt = selectOptions['find']({item: item});
+          opt.remove();
           break;
         case 'updated:':
           selectOptions['find'](function(oldItem){
@@ -65,7 +66,7 @@ class DropDown extends Gnd.View {
     // Select added items when there is no selection
     selectOptions.on('added:', (item: SelectOption) => {
       if(this.selectingId){
-        if(item.get('itemId') === this.selectingId){
+        if(item.get('item').checkId(this.selectingId)){
           this.selectItem(item);
         }
       }else if(!this.get('selectedItem')){
@@ -108,7 +109,7 @@ class DropDown extends Gnd.View {
       {escape: _.escape});
 
       // events
-      Gnd.$('.gnd-combobox-selected',el).on('click', () => {
+      Gnd.$('.gnd-dropdown-selected',el).on('click', () => {
         this.activate(el);
       })
       
@@ -122,21 +123,21 @@ class DropDown extends Gnd.View {
     
   activate(el?)
   {
-    Gnd.$('.gnd-combobox', this.root).addClass('gnd-active').trigger('focus');
+    Gnd.$('.gnd-dropdown', this.root).addClass('gnd-active').trigger('focus');
     // Adjust selected element to the input element - we dont use this by default
-//      var $active = $('.gnd-combobox-item-selected',this.root);
-//      var $optionContainer = $('.gnd-combobox-optionlist',this.root);
+//      var $active = $('.gnd-dropdown-item-selected',this.root);
+//      var $optionContainer = $('.gnd-dropdown-optionlist',this.root);
 //      if($active) {
-//        var index = $('.gnd-combobox-option',this.root).index($active);
+//        var index = $('.gnd-dropdown-option',this.root).index($active);
 //        $optionContainer.css('top',-$active.outerHeight()*index+'px');
 //      }
   }
     
   deactivate(el?){
-    Gnd.$('.gnd-combobox', this.root).removeClass('gnd-active')          
+    Gnd.$('.gnd-dropdown', this.root).removeClass('gnd-active')          
   }
     
-  selectItem(item: Gnd.Model)
+  private selectItem(item: Gnd.Model)
   {
     if(item) {
       this.selectedItem && this.selectedItem.set('isSelected', false);
@@ -149,7 +150,8 @@ class DropDown extends Gnd.View {
         
       this.emit('selected:', item.get('item'));
     } else {
-      this.set('selectedItem.name','');
+      this.set('selectedName','');
+      this.emit('removedLast:');
     }
   }
     
@@ -165,7 +167,9 @@ class DropDown extends Gnd.View {
   selectById(id)
   {
     if(id !== this.selectedId && id !== this.selectingId){
-      var item = this.selectOptions['find']({itemId: id});
+      var item = this.selectOptions['find']((opt) => {
+        return opt.item.checkId(id);
+      });
         
       if(item && !item.disabled) {
         this.selectItem(item);
