@@ -20,7 +20,7 @@ class DropDown extends Gnd.View {
   constructor(collection: Gnd.Collection, opts)
   {
     super({
-      templateUrl: 'tmpl/dropdown.html.tmpl',
+      templateUrl: 'gnd/dropdown/dropdown.html.tmpl',
       templateEngine: _.template
     });
       

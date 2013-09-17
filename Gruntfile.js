@@ -11,7 +11,7 @@ module.exports = function(grunt) {
       return 'node_modules/'+dep+'/build/*.d.ts';
     });
   }
-    
+
   // Project configuration.
   grunt.initConfig({
     pkg: pkg,
@@ -28,75 +28,17 @@ module.exports = function(grunt) {
         }
       },
     },
-
     copy: {
-      /*
-      main: {
-        cwd: 'build/src/',
-        expand: true,
-        src: '**',
-        dest: 'build/',
-        flatten: true,
-        filter: 'isFile',
-      },
-      */
       tmpl:{
         cwd: 'src/',
         src: '*.tmpl',
-        dest: 'build/tmpl/',
+        dest: 'build/dropdown',
         expand: true,
         flatten: true,
         filter: 'isFile',
       }
     },
-    clean: ['build/tmpl'],
-    requirejs: {
-      app: {
-        options: {
-          baseUrl: "build",
-          
-          name: "dropdown",
-          include: ['text!tmpl/dropdown.html.tmpl'],
-          exclude: ['gnd', 'text'],
-          
-          useStrict: true,
-          out: "build/dropdown.js",
-          
-          paths: {
-            "gnd": Gnd.amd
-          },
-
-          optimize: "none"
-        }
-      },
-    },
-    uglify: {
-      client: {
-        files: {'build/dropdown.min.js': 'build/dropdown.js'},
-        options: {
-          banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
-          compress: {
-            warnings: false,
-            unsafe: true,
-          },
-          mangle: true, 
-          warnings: false
-          // report: 'gzip',
-        }
-      }
-    },
-    compress: {
-      main: {
-        options: {
-          mode: 'gzip',
-          level: 9
-        },
-        expand: true,
-        //cwd: 'assets/',
-        src: 'build/*.min.js',
-      }
-    },
-
+    clean: ['build'],
     // Constants for the Gruntfile so we can easily change the path for
     // our environments.
     BASE_PATH: './',
@@ -129,5 +71,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
 
   // Default task(s).
-  grunt.registerTask('default', ['typescript', 'copy', 'requirejs', 'uglify', 'compress', 'yuidoc', 'clean']);
+  grunt.registerTask('default', ['clean', 'typescript', 'copy', 'yuidoc']);
 };
