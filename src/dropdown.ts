@@ -1,9 +1,36 @@
-//var SelectOption = Model.extend('selectOptions');
 
 declare var _;
 
 class SelectOption extends Gnd.Model
 {}
+
+/**
+  This class is mainly used to break a circular dependency that affects the
+  retain/release mechanism to work properly.
+*/
+
+class DropDownProxy extends Gnd.Base
+{
+  private dropdown: DropDown;
+  
+  constructor(dropdown: DropDown){
+    super();
+    
+    this.dropdown = dropdown;
+    
+    this.bind('selectedId', dropdown);
+    this.bind('selectedName', dropdown);
+  }
+  
+  selectHandler(el)
+  {
+    var item = el['gnd-obj'];
+    if(!item.disabled) {
+      this.dropdown.selectItem(item);
+      this.dropdown.deactivate();
+    }
+  }
+}
 
 // SelectOption.bucket()
 // SelectOption.schema()
@@ -16,6 +43,7 @@ class DropDown extends Gnd.View {
   private viewModel: Gnd.ViewModel;
   private selectOptions: Gnd.Collection;
   private opts;
+  private dropdownProxy: DropDownProxy;
 
   constructor(collection: Gnd.Collection, opts)
   {
@@ -27,6 +55,8 @@ class DropDown extends Gnd.View {
     this.opts = opts = _.defaults(opts || {}, {
       standard: true
     });
+    
+    this.dropdownProxy = new DropDownProxy(this);
       
     if(opts.selection){
       opts.selection.model.on(opts.selection.key, (id) => {
@@ -90,7 +120,7 @@ class DropDown extends Gnd.View {
     
   destroy()
   {
-    Gnd.Base.release(this.viewModel, this.selectOptions);
+    Gnd.Base.release(this.viewModel, this.selectOptions, this.dropdownProxy);
     super.destroy();
   }
     
@@ -104,7 +134,7 @@ class DropDown extends Gnd.View {
     return super.render(context).then<HTMLElement>((el) => {
       this.viewModel = new Gnd.ViewModel(el, {
         collection: this.selectOptions,
-        combobox: this
+        combobox: this.dropdownProxy
       },
       {escape: _.escape});
 
@@ -137,7 +167,7 @@ class DropDown extends Gnd.View {
     Gnd.$('.gnd-dropdown', this.root).removeClass('gnd-active')          
   }
     
-  private selectItem(item: Gnd.Model)
+  selectItem(item: Gnd.Model)
   {
     if(item) {
       this.selectedItem && this.selectedItem.set('isSelected', false);
@@ -154,16 +184,7 @@ class DropDown extends Gnd.View {
       this.emit('removedLast:');
     }
   }
-    
-  selectHandler(el)
-  {
-    var item = el['gnd-obj'];
-    if(!item.disabled) {
-      this.selectItem(item);
-      this.deactivate();
-    }
-  }
-    
+  
   selectById(id)
   {
     if(id !== this.selectedId && id !== this.selectingId){
