@@ -13,7 +13,8 @@ module.exports = function(grunt) {
     ts: {
       client: {
         src: ['src/dropdown.ts'].concat(typescriptDependencies),
-        dest: './build/dropdown.js',
+        //dest: './build/dropdown.js',
+        outDir: './build/',
         options: {
           //module: 'amd', //or commonjs
           target: 'es3', //or es5
