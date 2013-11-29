@@ -5,17 +5,12 @@ module.exports = function(grunt) {
   
   var pkg = grunt.file.readJSON('package.json');
 
-  var typescriptDependencies = [];
-  if(pkg.tscDependencies){
-    typescriptDependencies = pkg.tscDependencies.map(function(dep){
-      return 'node_modules/'+dep+'/build/*.d.ts';
-    });
-  }
+  var typescriptDependencies = ['node_modules/gnd/build/gnd.d.ts'];
 
   // Project configuration.
   grunt.initConfig({
     pkg: pkg,
-    typescript: {
+    ts: {
       client: {
         src: ['src/dropdown.ts'].concat(typescriptDependencies),
         dest: './build/dropdown.js',
@@ -62,11 +57,11 @@ module.exports = function(grunt) {
   });
 
   // Load the plugin that provides the "uglify" task.
-  grunt.loadNpmTasks('grunt-typescript');
+  grunt.loadNpmTasks('grunt-ts');
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
 
   // Default task(s).
-  grunt.registerTask('default', ['clean', 'typescript', 'copy', 'yuidoc']);
+  grunt.registerTask('default', ['clean', 'ts', 'copy', 'yuidoc']);
 };
