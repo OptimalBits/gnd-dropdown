@@ -80,7 +80,7 @@ class DropDown extends Gnd.View {
           break;
         case 'removed:':
           var opt = selectOptions['find']({item: item});
-          opt.remove();
+          opt && selectOptions.remove(opt.id());
           break;
         case 'updated:':
           selectOptions['find'](function(oldItem){
