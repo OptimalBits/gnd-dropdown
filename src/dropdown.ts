@@ -53,7 +53,8 @@ class DropDown extends Gnd.View {
     });
       
     this.opts = opts = _.defaults(opts || {}, {
-      standard: true
+      standard: true,
+      nameKeyPath:'name'
     });
     
     this.dropdownProxy = new DropDownProxy(this);
@@ -75,7 +76,7 @@ class DropDown extends Gnd.View {
         case 'added:':
           selectOptions.add(new SelectOption(
             {item: item, 
-             name: item.get('name'),
+             name: item.get(opts.nameKeyPath),
              itemId: item.id()}));
           break;
         case 'removed:':
@@ -86,7 +87,7 @@ class DropDown extends Gnd.View {
           selectOptions['find'](function(oldItem){
             if(oldItem.item == item){
               oldItem.set('itemId', item.id());
-              oldItem.set('name', item.get('name'));
+              oldItem.set('name', item.get(opts.nameKeyPath));
             }
           });
           break;
