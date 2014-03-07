@@ -113,7 +113,10 @@ class DropDown extends Gnd.View {
     });
       
     if(opts.selectedId) {
-      this.selectById(opts.selectedId);
+      // Wait a tick to activate any selection event that might be attached
+      Gnd.Util.nextTick(() => {
+        this.selectById(opts.selectedId);  
+      })
     }
 
     opts.parent && this.parent(opts.parent);
