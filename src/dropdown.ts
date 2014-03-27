@@ -90,6 +90,10 @@ class DropDown extends Gnd.View {
               oldItem.set('name', item.get(opts.nameKeyPath));
             }
           });
+          if(this.selectedId === item.id()){
+            // Update selectedName if something changed
+            this.set('selectedName', item.get(opts.nameKeyPath));
+          }
           break;
         }
     });      
