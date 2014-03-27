@@ -71,7 +71,7 @@ class DropDown extends Gnd.View {
     var selectOptions = this.selectOptions = 
       new Gnd.Collection(SelectOption, {nosync: true});
         
-    selectOptions.link(collection, function(evt, item: Gnd.Model, fields?){
+    selectOptions.link(collection, (evt, item: Gnd.Model, fields?)=>{
       switch(evt){
         case 'added:':
           selectOptions.add(new SelectOption(
