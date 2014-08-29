@@ -1,6 +1,6 @@
 {
   "name": "gnd-dropdown",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "A Gnd dropdown component",
   "main": "index.js",
   "directories": {
