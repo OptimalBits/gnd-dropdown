@@ -30,7 +30,7 @@
     "gnd"
   ],
   "dependencies": {
-    "gnd": "^0.4.17"
+    "gnd": "^0.5.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
